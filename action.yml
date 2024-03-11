@@ -62,6 +62,10 @@ inputs:
       "cl" (Windows)'
     required: false
     default: 'gcc'
+  local:
+    description: 'Flag to indicate using a local cache for built perls'
+    required: false
+    default: false
 
 # Define your outputs here.
 outputs:
