@@ -1,11 +1,11 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Setup Perl'
+description: 'Setup a Perl Environment'
+author: 'Sanko Robinson'
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
   icon: 'heart'
-  color: 'red'
+  color: 'blue'
 
 # Define your inputs here.
 inputs:
@@ -13,11 +13,68 @@ inputs:
     description: 'Your input description here'
     required: true
     default: '1000'
+  herbicide:
+    description: 'Removes default install of Strawberry Perl from $PATH on
+      Windows' # https://github.com/kzrnm/fix-mingw
+    required: false
+    default: true
+  version:
+    description: 'Perl version to install (current default: 5.38.0)'
+    required: false
+    default: '5.38.0'
+  flavor:
+    description:
+      'Binary distribution of Perl. "default", "strawberry", and "cygwin" are
+      accepted on Windows.'
+    required: false
+    default: 'default'
+  threads:
+    required: false
+    default: false # Should be true on Windows? Defaults to true if flavor is 'strawberry'
+  quadmath:
+    required: false
+    default: false # Incompatible with "strawberry" and "cygwin" on Windows
+  longdouble:
+    required: false
+    double: false # Incompatible with "strawberry" and "cygwin" on Windows
+  cpan:
+    description:
+      'CPAN installer (with flags) to use for prerequisites. Default is "cpanm"'
+    required: false
+    default: 'cpanm'
+  cpan-args:
+    description: 'Flags to pass to your selected CPAN client'
+    required: false
+    default: '' # Should be '--notest' if using cpanm
+  prerequisites:
+    description: 'List of modules to install before running the action'
+    required: false
+    default: ''
+  cache-modules:
+    required: false
+    default: true
+  cwd:
+    required: false
+    default: '.'
+  compiler:
+    description:
+      'Compiler to build Perl with (if required). "gcc" (default), "g++", or
+      "cl" (Windows)'
+    required: false
+    default: 'gcc'
 
 # Define your outputs here.
 outputs:
   time:
     description: 'Your output description here'
+  perl-version:
+    description: 'The perl version'
+  perl:
+    description: 'Path to the installed perl binary'
+  cpanm:
+    description: 'Path to the installed cpan-minus executable'
+  cpm:
+    description: 'Path to the installed cpm executable'
 
 runs:
   using: node20
