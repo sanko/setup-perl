@@ -1,8 +1,9 @@
 import * as core from '@actions/core'
+import * as exec from '@actions/exec'
+import * as tc from '@actions/tool-cache'
+
 import { wait } from './wait'
 import { dl_source } from './dl_source'
-
-import * as exec from '@actions/exec'
 
 /**
  * The main function for the action.
@@ -23,6 +24,11 @@ export async function run(): Promise<void> {
     // Set outputs for other workflow steps to use
     core.setOutput('time', new Date().toTimeString())
     const version = core.getInput('version')
+
+    {
+      const allNodeVersions = tc.findAllVersions('perl')
+      console.log(`Versions of perl available: ${allNodeVersions}`)
+    }
     const extract = await dl_source(version, core.getInput('cwd'))
 
     core.debug(`${extract}/perl5-${version}`)
@@ -40,6 +46,20 @@ export async function run(): Promise<void> {
 
     await exec.exec('make', [], options)
     await exec.exec('make', ['install'], options)
+
+    //~ const node12ExtractedFolder = await tc.extractTar(node12Path, 'path/to/extract/to');
+
+    const cachedPath = await tc.cacheDir(
+      `$HOME/perl-${version}`,
+      'perl',
+      version
+    )
+    core.addPath(cachedPath)
+
+    {
+      const allNodeVersions = tc.findAllVersions('perl')
+      console.log(`Versions of perl available: ${allNodeVersions}`)
+    }
 
     //~ if (IS_WINDOWS) {
     //~ pythonExtractedFolder = await tc.extractZip(pythonPath);

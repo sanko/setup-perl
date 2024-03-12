@@ -28679,9 +28679,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const core = __importStar(__nccwpck_require__(2186));
+const exec = __importStar(__nccwpck_require__(1514));
+const tc = __importStar(__nccwpck_require__(7784));
 const wait_1 = __nccwpck_require__(5259);
 const dl_source_1 = __nccwpck_require__(8709);
-const exec = __importStar(__nccwpck_require__(1514));
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
@@ -28698,6 +28699,10 @@ async function run() {
         // Set outputs for other workflow steps to use
         core.setOutput('time', new Date().toTimeString());
         const version = core.getInput('version');
+        {
+            const allNodeVersions = tc.findAllVersions('perl');
+            console.log(`Versions of perl available: ${allNodeVersions}`);
+        }
         const extract = await (0, dl_source_1.dl_source)(version, core.getInput('cwd'));
         core.debug(`${extract}/perl5-${version}`);
         const options = {
@@ -28708,6 +28713,13 @@ async function run() {
         await exec.exec('./Configure', ['-des', `-Dprefix=$HOME/perl-${version}`], options);
         await exec.exec('make', [], options);
         await exec.exec('make', ['install'], options);
+        //~ const node12ExtractedFolder = await tc.extractTar(node12Path, 'path/to/extract/to');
+        const cachedPath = await tc.cacheDir(`$HOME/perl-${version}`, 'perl', version);
+        core.addPath(cachedPath);
+        {
+            const allNodeVersions = tc.findAllVersions('perl');
+            console.log(`Versions of perl available: ${allNodeVersions}`);
+        }
         //~ if (IS_WINDOWS) {
         //~ pythonExtractedFolder = await tc.extractZip(pythonPath);
         //~ } else {
