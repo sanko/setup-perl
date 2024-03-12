@@ -9,60 +9,47 @@ branding:
 
 # Define your inputs here.
 inputs:
-  milliseconds:
+  timeout:
     description: 'Your input description here'
-    required: true
+    required: false
     default: '1000'
-  herbicide:
+  path-herbicide:
     description: 'Removes default install of Strawberry Perl from $PATH on
       Windows' # https://github.com/kzrnm/fix-mingw
     required: false
     default: true
-  version:
+  perl-version:
     description: 'Perl version to install (current default: 5.38.0)'
     required: false
     default: '5.38.0'
-  flavor:
+  perl-flavor:
     description:
       'Binary distribution of Perl. "default", "strawberry", and "cygwin" are
       accepted on Windows.'
     required: false
     default: 'default'
-  threads:
+  use-threads:
     required: false
     default: false # Should be true on Windows? Defaults to true if flavor is 'strawberry'
-  quadmath:
+  use-quadmath:
     required: false
     default: false # Incompatible with "strawberry" and "cygwin" on Windows
-  longdouble:
+  use-longdouble:
     required: false
     double: false # Incompatible with "strawberry" and "cygwin" on Windows
-  cpan:
-    description:
-      'CPAN installer (with flags) to use for prerequisites. Default is "cpanm"'
-    required: false
-    default: 'cpanm'
-  cpan-args:
-    description: 'Flags to pass to your selected CPAN client'
-    required: false
-    default: '' # Should be '--notest' if using cpanm
-  prerequisites:
-    description: 'List of modules to install before running the action'
-    required: false
-    default: ''
-  cache-modules:
-    required: false
-    default: true
-  cwd:
-    required: false
-    default: '.'
   compiler:
     description:
       'Compiler to build Perl with (if required). "gcc" (default), "g++", or
       "cl" (Windows)'
     required: false
     default: 'gcc'
-  local:
+  architecture:
+    description:
+      ' The target architecture of the package. Possible values: `x86`, `x64`,
+      `armv7`, `aarch64`, `ppc64le`. Default value: Derived from the runner
+      machine.'
+    required: false
+  local-cache:
     description: 'Flag to indicate using a local cache for built perls'
     required: false
     default: false

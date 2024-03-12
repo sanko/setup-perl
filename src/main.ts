@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import { wait } from './wait'
+import { dl_source } from './dl_source'
 
 /**
  * The main function for the action.
@@ -19,6 +20,13 @@ export async function run(): Promise<void> {
 
     // Set outputs for other workflow steps to use
     core.setOutput('time', new Date().toTimeString())
+
+    const extract = await dl_source(
+      core.getInput('version'),
+      core.getInput('cwd')
+    )
+
+    core.debug(extract)
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)
