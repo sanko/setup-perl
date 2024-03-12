@@ -9,7 +9,7 @@ import * as tc from '@actions/tool-cache'
  */
 export async function dl_source(version: string, cwd: string): Promise<string> {
   //~ return new Promise(resolve => {
-  const url = `https://github.com/Perl/perl5/archive/refs/tags/v${version}.zip`
+  const url = `https://github.com/Perl/perl5/archive/refs/tags/v${version}.tar.gz`
   //~ https://github.com/Perl/perl5/archive/refs/tags/v5.39.8.zip
   //~ https://github.com/Perl/perl5/archive/refs/tags/v5.39.8.tar.gz
   let perl5ExtractedFolder = ''
