@@ -28612,6 +28612,7 @@ async function dl_source(version, cwd) {
     //~ https://github.com/Perl/perl5/archive/refs/tags/v5.39.8.tar.gz
     let perl5ExtractedFolder = '';
     try {
+        core.debug(`Downloading ${url}...`);
         const perl5Path = await tc.downloadTool(url, undefined /*, AUTH*/);
         core.info('Extract downloaded archive');
         perl5ExtractedFolder = await tc.extractTar(perl5Path, `${cwd}/extract`);
