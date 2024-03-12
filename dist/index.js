@@ -28701,7 +28701,7 @@ async function run() {
         const extract = await (0, dl_source_1.dl_source)(version, core.getInput('cwd'));
         core.debug(extract);
         const options = {
-            cwd: extract,
+            cwd: `extract/perl-${version}`,
             silent: false
         };
         await exec.exec('./Configure', ['-des', `.Dprefix=$HOME/perl-${version}`], options);

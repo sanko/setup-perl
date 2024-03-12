@@ -28,7 +28,7 @@ export async function run(): Promise<void> {
     core.debug(extract)
 
     const options = {
-      cwd: extract,
+      cwd: `extract/perl-${version}`,
       silent: false
     }
 
