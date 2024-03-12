@@ -24,12 +24,13 @@ export async function run(): Promise<void> {
     // Set outputs for other workflow steps to use
     core.setOutput('time', new Date().toTimeString())
     const version = core.getInput('version')
+    const cwd = core.getInput('cwd')
 
     {
       const allNodeVersions = tc.findAllVersions('perl')
       console.log(`Versions of perl available: ${allNodeVersions}`)
     }
-    const extract = await dl_source(version, core.getInput('cwd'))
+    const extract = await dl_source(version, `${cwd}/source/${version}`)
 
     core.debug(`${extract}/perl5-${version}`)
 
@@ -40,7 +41,7 @@ export async function run(): Promise<void> {
     //~ await exec.exec('ls', ['-R'], options)
     await exec.exec(
       './Configure',
-      ['-des', `-Dprefix=$HOME/perl-${version}`],
+      ['-des', `-Dprefix=${cwd}/perl-${version}`],
       options
     )
 
@@ -50,7 +51,7 @@ export async function run(): Promise<void> {
     //~ const node12ExtractedFolder = await tc.extractTar(node12Path, 'path/to/extract/to');
 
     const cachedPath = await tc.cacheDir(
-      `$HOME/perl-${version}`,
+      `${cwd}/perl-${version}`,
       'perl',
       version
     )

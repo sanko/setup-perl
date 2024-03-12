@@ -28699,22 +28699,23 @@ async function run() {
         // Set outputs for other workflow steps to use
         core.setOutput('time', new Date().toTimeString());
         const version = core.getInput('version');
+        const cwd = core.getInput('cwd');
         {
             const allNodeVersions = tc.findAllVersions('perl');
             console.log(`Versions of perl available: ${allNodeVersions}`);
         }
-        const extract = await (0, dl_source_1.dl_source)(version, core.getInput('cwd'));
+        const extract = await (0, dl_source_1.dl_source)(version, `${cwd}/source/${version}`);
         core.debug(`${extract}/perl5-${version}`);
         const options = {
             cwd: `${extract}/perl5-${version}`,
             silent: false
         };
         //~ await exec.exec('ls', ['-R'], options)
-        await exec.exec('./Configure', ['-des', `-Dprefix=$HOME/perl-${version}`], options);
+        await exec.exec('./Configure', ['-des', `-Dprefix=${cwd}/perl-${version}`], options);
         await exec.exec('make', [], options);
         await exec.exec('make', ['install'], options);
         //~ const node12ExtractedFolder = await tc.extractTar(node12Path, 'path/to/extract/to');
-        const cachedPath = await tc.cacheDir(`$HOME/perl-${version}`, 'perl', version);
+        const cachedPath = await tc.cacheDir(`${cwd}/perl-${version}`, 'perl', version);
         core.addPath(cachedPath);
         {
             const allNodeVersions = tc.findAllVersions('perl');
