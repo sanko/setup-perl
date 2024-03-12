@@ -25,10 +25,10 @@ export async function run(): Promise<void> {
     const version = core.getInput('version')
     const extract = await dl_source(version, core.getInput('cwd'))
 
-    core.debug(extract)
+    core.debug(`${extract}/perl-${version}`)
 
     const options = {
-      cwd: `extract/perl-${version}`,
+      cwd: `${extract}/perl-${version}`,
       silent: false
     }
 
