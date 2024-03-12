@@ -29,7 +29,6 @@ export async function dl_source(version: string, cwd: string): Promise<string> {
 
     //core.info('Execute installation script');
     //await installPerl(perl5ExtractedFolder);
-    return perl5ExtractedFolder
   } catch (err) {
     if (err instanceof tc.HTTPError) {
       // Rate limit?
@@ -46,5 +45,6 @@ export async function dl_source(version: string, cwd: string): Promise<string> {
     }
     throw err
   }
+  return perl5ExtractedFolder
   //~ })
 }

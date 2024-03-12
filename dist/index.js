@@ -28624,7 +28624,6 @@ async function dl_source(version, cwd) {
         //~ }
         //core.info('Execute installation script');
         //await installPerl(perl5ExtractedFolder);
-        return perl5ExtractedFolder;
     }
     catch (err) {
         if (err instanceof tc.HTTPError) {
@@ -28641,6 +28640,7 @@ async function dl_source(version, cwd) {
         }
         throw err;
     }
+    return perl5ExtractedFolder;
     //~ })
 }
 exports.dl_source = dl_source;
@@ -28681,6 +28681,7 @@ exports.run = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const wait_1 = __nccwpck_require__(5259);
 const dl_source_1 = __nccwpck_require__(8709);
+const exec = __importStar(__nccwpck_require__(1514));
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
@@ -28696,8 +28697,23 @@ async function run() {
         core.debug(new Date().toTimeString());
         // Set outputs for other workflow steps to use
         core.setOutput('time', new Date().toTimeString());
-        const extract = await (0, dl_source_1.dl_source)(core.getInput('version'), core.getInput('cwd'));
+        const version = core.getInput('version');
+        const extract = await (0, dl_source_1.dl_source)(version, core.getInput('cwd'));
         core.debug(extract);
+        const options = {
+            cwd: extract,
+            silent: false
+        };
+        await exec.exec('./Configure', ['-des', `.Dprefix=$HOME/perl-${version}`], options);
+        await exec.exec('make', [], options);
+        await exec.exec('make', ['install'], options);
+        //~ if (IS_WINDOWS) {
+        //~ pythonExtractedFolder = await tc.extractZip(pythonPath);
+        //~ } else {
+        //~ pythonExtractedFolder = await tc.extractTar(pythonPath);
+        //~ }
+        //core.info('Execute installation script');
+        //await installPerl(perl5ExtractedFolder);
     }
     catch (error) {
         // Fail the workflow run if an error occurs
