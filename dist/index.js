@@ -28681,6 +28681,7 @@ exports.run = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
 const tc = __importStar(__nccwpck_require__(7784));
+const http = __importStar(__nccwpck_require__(6255));
 const wait_1 = __nccwpck_require__(5259);
 const dl_source_1 = __nccwpck_require__(8709);
 /**
@@ -28689,6 +28690,30 @@ const dl_source_1 = __nccwpck_require__(8709);
  */
 async function run() {
     try {
+        // Get tags from Perl repo
+        //~ https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repository-tags
+        const url = 'https://api.github.com/repos/perl/perl5/tags';
+        const client = new http.HttpClient();
+        const res = await client.get(url);
+        if (res.message.statusCode === 200) {
+            const tags = JSON.parse(await res.readBody());
+            const latestTag = tags.reduce((prev, current) => {
+                const prevVersion = prev.name.split('.').map(Number);
+                const currentVersion = current.name.split('.').map(Number);
+                return prevVersion.every((v, idx) => v >= currentVersion[idx])
+                    ? prev
+                    : current;
+            }, tags[0]);
+            core.setOutput('latest_version', latestTag.name);
+            // Extract and sort version numbers
+            const versions = tags.map(tag => tag.name.replace(/^v/, ''));
+            versions.sort((a, b) => b.localeCompare(a));
+            // Get the most recent version
+            const latestVersion = versions[0];
+            // Set output
+            //core.setOutput('latest_version', latestVersion);
+            console.log(`Latest Perl version: ${latestVersion}`);
+        }
         const ms = core.getInput('milliseconds');
         // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
         core.debug(`Waiting ${ms} milliseconds ...`);
@@ -28715,7 +28740,7 @@ async function run() {
         await exec.exec('make', [], options);
         await exec.exec('make', ['install'], options);
         //~ const node12ExtractedFolder = await tc.extractTar(node12Path, 'path/to/extract/to');
-        const cachedPath = await tc.cacheDir(`${cwd}/perl-${version}`, 'perl', version);
+        const cachedPath = await tc.cacheDir(`${cwd}/perl-${version}/`, 'perl', version);
         core.addPath(cachedPath);
         {
             const allNodeVersions = tc.findAllVersions('perl');
