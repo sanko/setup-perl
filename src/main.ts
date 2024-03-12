@@ -25,16 +25,16 @@ export async function run(): Promise<void> {
     const version = core.getInput('version')
     const extract = await dl_source(version, core.getInput('cwd'))
 
-    core.debug(`${extract}/perl-${version}`)
+    core.debug(`${extract}/perl5-${version}`)
 
     const options = {
-      cwd: `${extract}`,
+      cwd: `${extract}/perl5-${version}`,
       silent: false
     }
-    await exec.exec('ls', ['-R'], options)
+    //~ await exec.exec('ls', ['-R'], options)
     await exec.exec(
-      'sh Configure',
-      ['-des', `.Dprefix=$HOME/perl${version}`],
+      './Configure',
+      ['-des', `-Dprefix=$HOME/perl-${version}`],
       options
     )
 

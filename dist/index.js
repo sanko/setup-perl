@@ -28699,13 +28699,13 @@ async function run() {
         core.setOutput('time', new Date().toTimeString());
         const version = core.getInput('version');
         const extract = await (0, dl_source_1.dl_source)(version, core.getInput('cwd'));
-        core.debug(`${extract}/perl-${version}`);
+        core.debug(`${extract}/perl5-${version}`);
         const options = {
-            cwd: `${extract}`,
+            cwd: `${extract}/perl5-${version}`,
             silent: false
         };
-        await exec.exec('ls', ['-R'], options);
-        await exec.exec('sh Configure', ['-des', `.Dprefix=$HOME/perl${version}`], options);
+        //~ await exec.exec('ls', ['-R'], options)
+        await exec.exec('./Configure', ['-des', `-Dprefix=$HOME/perl-${version}`], options);
         await exec.exec('make', [], options);
         await exec.exec('make', ['install'], options);
         //~ if (IS_WINDOWS) {
