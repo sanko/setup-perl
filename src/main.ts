@@ -19,7 +19,8 @@ export async function run(): Promise<void> {
 
     const res: http.HttpClientResponse = await client.get(url)
 
-    if (res.message.statusCode === 200) {
+    //if (res.message.statusCode === 200)
+    {
       const json = await res.readBody()
       console.debug(json)
       const tags = JSON.parse(json) as { name: string }[]
