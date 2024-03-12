@@ -28704,7 +28704,7 @@ async function run() {
             cwd: `${extract}/perl-${version}`,
             silent: false
         };
-        await exec.exec('./Configure', ['-des', `.Dprefix=$HOME/perl-${version}`], options);
+        await exec.exec('sh Configure', ['-des', `.Dprefix=$HOME/perl-${version}`], options);
         await exec.exec('make', [], options);
         await exec.exec('make', ['install'], options);
         //~ if (IS_WINDOWS) {
