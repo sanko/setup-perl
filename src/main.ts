@@ -28,10 +28,10 @@ export async function run(): Promise<void> {
     core.debug(`${extract}/perl-${version}`)
 
     const options = {
-      cwd: `${extract}/perl-${version}`,
+      cwd: `${extract}`,
       silent: false
     }
-
+    await exec.exec('ls', ['-R'], options)
     await exec.exec(
       'sh Configure',
       ['-des', `.Dprefix=$HOME/perl${version}`],
