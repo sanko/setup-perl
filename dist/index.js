@@ -28607,7 +28607,7 @@ const tc = __importStar(__nccwpck_require__(7784));
  */
 async function dl_source(version, cwd) {
     //~ return new Promise(resolve => {
-    const url = `https://github.com/Perl/perl5/archive/refs/tags/v${version}.zip`;
+    const url = `https://github.com/Perl/perl5/archive/refs/tags/v${version}.tar.gz`;
     //~ https://github.com/Perl/perl5/archive/refs/tags/v5.39.8.zip
     //~ https://github.com/Perl/perl5/archive/refs/tags/v5.39.8.tar.gz
     let perl5ExtractedFolder = '';
