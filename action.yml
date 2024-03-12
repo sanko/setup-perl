@@ -53,6 +53,9 @@ inputs:
     description: 'Flag to indicate using a local cache for built perls'
     required: false
     default: false
+  cwd:
+    required: false
+    default: '.'
 
 # Define your outputs here.
 outputs:
