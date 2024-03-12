@@ -33,8 +33,8 @@ export async function run(): Promise<void> {
     }
 
     await exec.exec(
-      'sh Configure',
-      ['-des', `.Dprefix=$HOME/perl-${version}`],
+      './Configure',
+      ['-des', `.Dprefix=$HOME/perl${version}`],
       options
     )
 
