@@ -20,7 +20,10 @@ export async function run(): Promise<void> {
     const res: http.HttpClientResponse = await client.get(url)
 
     if (res.message.statusCode === 200) {
-      const tags = JSON.parse(await res.readBody()) as { name: string }[]
+      const json = await res.readBody()
+      console.debug(json)
+      const tags = JSON.parse(json) as { name: string }[]
+
       const latestTag = tags.reduce((prev, current) => {
         const prevVersion = prev.name.split('.').map(Number)
         const currentVersion = current.name.split('.').map(Number)

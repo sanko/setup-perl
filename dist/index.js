@@ -28696,7 +28696,9 @@ async function run() {
         const client = new http.HttpClient();
         const res = await client.get(url);
         if (res.message.statusCode === 200) {
-            const tags = JSON.parse(await res.readBody());
+            const json = await res.readBody();
+            console.debug(json);
+            const tags = JSON.parse(json);
             const latestTag = tags.reduce((prev, current) => {
                 const prevVersion = prev.name.split('.').map(Number);
                 const currentVersion = current.name.split('.').map(Number);
