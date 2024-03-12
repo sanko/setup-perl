@@ -22,7 +22,7 @@ export async function run(): Promise<void> {
     //if (res.message.statusCode === 200)
     {
       const json = await res.readBody()
-      console.debug(json)
+      console.debug('json: ${json}')
       const tags = JSON.parse(json) as { name: string }[]
 
       const latestTag = tags.reduce((prev, current) => {
