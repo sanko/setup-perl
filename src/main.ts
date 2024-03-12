@@ -59,6 +59,7 @@ export async function run(): Promise<void> {
 
     // Set outputs for other workflow steps to use
     core.setOutput('time', new Date().toTimeString())
+    /*
     const version = core.getInput('version')
     const cwd = core.getInput('cwd')
 
@@ -91,7 +92,7 @@ export async function run(): Promise<void> {
       'perl',
       version
     )
-    core.addPath(cachedPath)
+    core.addPath(cachedPath)*/
 
     {
       const allNodeVersions = tc.findAllVersions('perl')
