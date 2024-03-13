@@ -15,15 +15,17 @@ export async function run(): Promise<void> {
     // Get tags from Perl repo
     //~ https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repository-tags
     const url = 'https://api.github.com/repos/perl/perl5/tags'
-    const client = new http.HttpClient()
+    const client = new http.HttpClient(
+      'GHA'
+      //~ 'X-GitHub-Api-Version': '2022-11-28'}
+    )
 
     const res: http.HttpClientResponse = await client.get(url)
 
-    //if (res.message.statusCode === 200)
-    {
+    if (res.message.statusCode === 200) {
       const json = await res.readBody()
       console.debug(`json: ${json}`)
-      /*
+
       const tags = JSON.parse(json) as { name: string }[]
 
       const latestTag = tags.reduce((prev, current) => {
@@ -46,7 +48,7 @@ export async function run(): Promise<void> {
       // Set output
       //core.setOutput('latest_version', latestVersion);
 
-      console.log(`Latest Perl version: ${latestVersion}`)*/
+      console.log(`Latest Perl version: ${latestVersion}`)
     }
     const ms: string = core.getInput('milliseconds')
 

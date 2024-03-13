@@ -28693,7 +28693,9 @@ async function run() {
         // Get tags from Perl repo
         //~ https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repository-tags
         const url = 'https://api.github.com/repos/perl/perl5/tags';
-        const client = new http.HttpClient();
+        const client = new http.HttpClient('GHA'
+        //~ 'X-GitHub-Api-Version': '2022-11-28'}
+        );
         const res = await client.get(url);
         //if (res.message.statusCode === 200)
         {
