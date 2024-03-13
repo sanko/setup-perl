@@ -22,7 +22,8 @@ export async function run(): Promise<void> {
     //if (res.message.statusCode === 200)
     {
       const json = await res.readBody()
-      console.debug('json: ${json}')
+      console.debug(`json: ${json}`)
+      /*
       const tags = JSON.parse(json) as { name: string }[]
 
       const latestTag = tags.reduce((prev, current) => {
@@ -45,7 +46,7 @@ export async function run(): Promise<void> {
       // Set output
       //core.setOutput('latest_version', latestVersion);
 
-      console.log(`Latest Perl version: ${latestVersion}`)
+      console.log(`Latest Perl version: ${latestVersion}`)*/
     }
     const ms: string = core.getInput('milliseconds')
 
@@ -59,7 +60,7 @@ export async function run(): Promise<void> {
 
     // Set outputs for other workflow steps to use
     core.setOutput('time', new Date().toTimeString())
-    /*
+
     const version = core.getInput('version')
     const cwd = core.getInput('cwd')
 
@@ -92,12 +93,7 @@ export async function run(): Promise<void> {
       'perl',
       version
     )
-    core.addPath(cachedPath)*/
-
-    {
-      const allNodeVersions = tc.findAllVersions('perl')
-      console.log(`Versions of perl available: ${allNodeVersions}`)
-    }
+    core.addPath(cachedPath)
 
     //~ if (IS_WINDOWS) {
     //~ pythonExtractedFolder = await tc.extractZip(pythonPath);
